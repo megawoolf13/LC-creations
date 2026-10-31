@@ -9,30 +9,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;700;800;900&display=swap" rel="stylesheet">
   
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              black: '#08080a',
-              card: '#111115',
-              border: '#22222a',
-              emerald: '#10b981',
-              emeraldHover: '#059669',
-              accent: '#34d399',
-            }
-          },
-          fontFamily: {
-            heading: ['"Plus Jakarta Sans"', 'sans-serif'],
-            body: ['Inter', 'sans-serif'],
-          }
-        }
-      }
+  <!-- Tailwind v4 browser build via jsDelivr (replaces cdn.tailwindcss.com) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-brand-black: #08080a;
+      --color-brand-card: #111115;
+      --color-brand-border: #22222a;
+      --color-brand-emerald: #10b981;
+      --color-brand-emeraldHover: #059669;
+      --color-brand-accent: #34d399;
+      --font-heading: "Plus Jakarta Sans", sans-serif;
+      --font-body: Inter, sans-serif;
     }
-  </script>
+  </style>
 
   <style>
     .glow-effect {
@@ -267,17 +257,24 @@
       if (audioEnabled) playSound('toggle');
     }
 
+    // ---- AGE GATE (fixed) ----
     function confirmAge() {
       playSound('click');
-      const ageModal = document.getElementById('ageModal');
-      if (ageModal) {
-        ageModal.style.display = 'none';
-      }
+      const modal = document.getElementById('ageModal');
+      modal.classList.remove('flex');
+      modal.classList.add('hidden');
+      modal.style.display = 'none'; // belt and braces so it always closes
     }
 
     function rejectAge() {
-      window.location.href = 'https://www.youtube.com/watch?v=WRVsOCh907o';
+      const url = 'https://www.youtube.com/watch?v=WRVsOCh907o'; // swap in your nursery rhyme link
+      try {
+        window.top.location.href = url;   // works even if the page is inside a frame
+      } catch (e) {
+        window.open(url, '_blank');       // fallback if the frame blocks navigation
+      }
     }
+    // ---- END AGE GATE ----
 
     function toggleContactModal() {
       playSound('click');
